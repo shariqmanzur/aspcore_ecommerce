@@ -1,12 +1,12 @@
 ﻿@model Category
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
 <form method="post">
     <div class="border p-3 mt-4">
         <div class="row pb-3">
-            <h2 class="text-primary">Create Category</h2>
+            <h2 class="text-primary">Edit Category</h2>
             <hr />
         </div>
         <div class="row mb-3">
@@ -19,7 +19,7 @@
             <input asp-for="DisplayOrder" class="form-control" />
             <span asp-validation-for="DisplayOrder" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button type="submit" class="btn btn-primary">Update</button>
     </div>
     <a asp-action="Index" asp-controller="Category">Back to List</a>
 </form>
