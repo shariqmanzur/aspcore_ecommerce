@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Web.Data;
-using Web.Models;
+﻿using DataAccessLayer.Data;
+using Microsoft.AspNetCore.Mvc;
+using Models;
 
 namespace Web.Controllers
 {
