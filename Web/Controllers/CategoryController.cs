@@ -33,6 +33,7 @@ namespace Web.Controllers
             {
                 _context.Categories.Add(category);
                 _context.SaveChanges();
+                TempData["success"] = "Category Created Done!";
                 return RedirectToAction("Index");
             }
             return View();
@@ -61,6 +62,7 @@ namespace Web.Controllers
             {
                 _context.Categories.Update(category);
                 _context.SaveChanges();
+                TempData["success"] = "Category Updated Done!";
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
@@ -92,6 +94,7 @@ namespace Web.Controllers
             }
             _context.Categories.Remove(category);
             _context.SaveChanges();
+            TempData["success"] = "Category Deleted Done!";
             return RedirectToAction("Index");
         }
     }
