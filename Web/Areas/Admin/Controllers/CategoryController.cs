@@ -3,8 +3,9 @@ using DataAccessLayer.Infrastructure.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 
-namespace Web.Controllers
+namespace Web.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private IUnitOfWork _unitOfWork;
@@ -43,7 +44,7 @@ namespace Web.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
