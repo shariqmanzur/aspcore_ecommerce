@@ -2,6 +2,7 @@
 using DataAccessLayer.Infrastructure.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.ViewModels;
 
 namespace Web.Areas.Admin.Controllers
 {
@@ -17,54 +18,50 @@ namespace Web.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Category> categories = _unitOfWork.Category.GetAll();
-            return View(categories);
+            CategoryVM categoryVM = new CategoryVM();
+            categoryVM.Categories = _unitOfWork.Category.GetAll();
+            return View(categoryVM);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult CreateEdit(int? id)
         {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Category category)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Category.Add(category);
-                _unitOfWork.Save();
-                TempData["success"] = "Category Created Done!";
-                return RedirectToAction("Index");
-            }
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Edit(int? id)
-        {
+            CategoryVM categoryVM = new CategoryVM();
             if (id == null || id == 0)
             {
-                return NotFound();
+                return View(categoryVM);
             }
-            var category = _unitOfWork.Category.GetT(x => x.Id == id);
-            if (category == null)
+            else
             {
-                return NotFound();
+                categoryVM.Category = _unitOfWork.Category.GetT(x => x.Id == id);
+                if(categoryVM == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return View(categoryVM);
+                }
             }
-            return View(category);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Category category)
+        public IActionResult CreateEdit(CategoryVM categoryVM)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Category.Update(category);
+                if(categoryVM.Category.Id == 0)
+                {
+                    _unitOfWork.Category.Add(categoryVM.Category);
+                    TempData["success"] = "Category Created Done!";
+                }
+                else
+                {
+                    _unitOfWork.Category.Update(categoryVM.Category);
+                    TempData["success"] = "Category Updated Done!";
+                }                
                 _unitOfWork.Save();
-                TempData["success"] = "Category Updated Done!";
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");

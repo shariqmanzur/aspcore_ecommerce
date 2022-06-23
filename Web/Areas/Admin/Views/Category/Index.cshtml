@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Category>
+﻿@model Models.ViewModels.CategoryVM
 @{
     ViewData["Title"] = "Index";
 }
@@ -9,7 +9,7 @@
             <h2 class="text-primary">Categories</h2>
         </div>
         <div class="col-6 text-end">
-            <a class="btn btn-primary" asp-action="Create" asp-controller="Category"><i class="bi bi-plus-circle"></i> &nbsp; Create New Category</a>
+            <a class="btn btn-primary" asp-action="CreateEdit" asp-controller="Category"><i class="bi bi-plus-circle"></i> &nbsp; Create New Category</a>
         </div>
     </div>
 </div>
@@ -23,13 +23,13 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Categories)
         {
         <tr>
             <td>@item.Name</td>
             <td>@item.DisplayOrder</td>
             <td role="group">
-                <a asp-action="Edit" asp-controller="Category" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                <a asp-action="CreateEdit" asp-controller="Category" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
                 <a asp-action="Delete" asp-controller="Category" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
             </td>
         </tr>   
