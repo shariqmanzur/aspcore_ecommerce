@@ -27,7 +27,7 @@
         </div>
         <div class="row mb-3">
             <label asp-for="Product.ImageUrl"></label>
-            <input type="file" name="file" class="form-control" />
+            <input type="file" name="file" id="file" class="form-control" />
         </div>
         <div class="row mb-3">
             <label asp-for="Product.CategoryId"></label>
@@ -38,7 +38,7 @@
         </div>
         @if(Model.Product == null || Model.Product.Id == 0)
         {
-            <button type="submit" class="btn btn-primary">Create</button> 
+            <button type="submit" class="btn btn-primary" onclick="return ValidateEmpty()">Create</button> 
         }
         else
         {
@@ -50,6 +50,20 @@
 
 @section scripts{
     @{
-        <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
     }
+    <script>
+        function ValidateEmpty()
+        {
+            if(document.getElementById("file").value=="")
+            {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Upload Image!'
+                });
+                return false;
+            }
+        }
+    </script>
 }
