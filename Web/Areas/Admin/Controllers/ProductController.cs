@@ -11,10 +11,12 @@ namespace Web.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private IUnitOfWork _unitOfWork;
+        private IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IUnitOfWork unitOfWork)
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -57,20 +59,27 @@ namespace Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateEdit(CategoryVM categoryVM)
+        public IActionResult CreateEdit(ProductVM productVM, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
-                if(categoryVM.Category.Id == 0)
+                string fileName = null;
+                if(file != null)
                 {
-                    _unitOfWork.Category.Add(categoryVM.Category);
-                    TempData["success"] = "Category Created Done!";
+                    string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "content/ProductImages");
+                    fileName = Guid.NewGuid().ToString() + "-" + file.FileName;
+                    string filePath = Path.Combine(uploadDir, fileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    productVM.Product.ImageUrl = @"\content\ProductImages\" + fileName;
                 }
-                else
+                if(productVM.Product.Id == 0)
                 {
-                    _unitOfWork.Category.Update(categoryVM.Category);
-                    TempData["success"] = "Category Updated Done!";
-                }                
+                    _unitOfWork.Product.Add(productVM.Product);
+                    TempData["success"] = "Product Created Done!";
+                }
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
