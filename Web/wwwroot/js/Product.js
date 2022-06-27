@@ -19,7 +19,7 @@ $(document).ready(function () {
                 "render": function (data) {
                     return `   
 
-                        <a href="/Admin/Product/CreateUpdate?id=${data}"><i class="bi bi-pencil-square"></i></a>
+                        <a href="/Admin/Product/CreateEdit?id=${data}"><i class="bi bi-pencil-square"></i></a>
                         <a asp-action="Delete" asp-controller="Product" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
 `
                 }

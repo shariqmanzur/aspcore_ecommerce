@@ -71,12 +71,22 @@ namespace Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                string fileName = null;
+                string fileName = String.Empty;
                 if(file != null)
                 {
                     string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "content/ProductImages");
                     fileName = Guid.NewGuid().ToString() + "-" + file.FileName;
                     string filePath = Path.Combine(uploadDir, fileName);
+
+                    if(productVM.Product.ImageUrl != null)
+                    {
+                        var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         file.CopyTo(fileStream);
@@ -87,6 +97,11 @@ namespace Web.Areas.Admin.Controllers
                 {
                     _unitOfWork.Product.Add(productVM.Product);
                     TempData["success"] = "Product Created Done!";
+                }
+                else
+                {
+                    _unitOfWork.Product.Update(productVM.Product);
+                    TempData["success"] = "Product Updated Done!";
                 }
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
