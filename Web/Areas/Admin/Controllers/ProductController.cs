@@ -19,11 +19,19 @@ namespace Web.Areas.Admin.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
+        #region APICALL
+
+        public IActionResult AllProducts()
+        {
+            var products = _unitOfWork.Product.GetAll(includeProperties: "Category");
+            return Json(new { data = products });
+        }
+
+        #endregion
+
         public IActionResult Index()
         {
-            ProductVM productVM = new ProductVM();
-            productVM.Products = _unitOfWork.Product.GetAll();
-            return View(productVM);
+            return View();
         }
 
         [HttpGet]

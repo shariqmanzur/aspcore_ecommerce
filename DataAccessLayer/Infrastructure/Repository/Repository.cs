@@ -36,14 +36,31 @@ namespace DataAccessLayer.Infrastructure.Repository
             _dbSet.RemoveRange(entity);
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(string? includeProperties)
         {
-            return _dbSet.ToList();
+            IQueryable<T> values = _dbSet;
+            if(includeProperties != null)
+            {
+                foreach(var item in includeProperties.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    values = values.Include(item);
+                }
+            }
+            return values.ToList();
         }
 
-        public T GetT(Expression<Func<T, bool>> expression)
+        public T GetT(Expression<Func<T, bool>> expression, string? includeProperties)
         {
-            return _dbSet.Where(expression).FirstOrDefault();
+            IQueryable<T> values = _dbSet;
+            values = values.Where(expression);
+            if (includeProperties != null)
+            {
+                foreach (var item in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    values = values.Include(item);
+                }
+            }
+            return values.FirstOrDefault();
         }
     }
 }
