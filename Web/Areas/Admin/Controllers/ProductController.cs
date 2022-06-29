@@ -109,34 +109,28 @@ namespace Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        #region DeleteAPICALL
+        [HttpDelete]
         public IActionResult Delete(int? id)
         {
-            if (id == null || id == 0)
+            var product = _unitOfWork.Product.GetT(x => x.Id == id);
+            if(product == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "Error in Fetching Data" });
             }
-            var category = _unitOfWork.Category.GetT(x => x.Id == id);
-            if (category == null)
+            else
             {
-                return NotFound();
+                var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, product.ImageUrl.TrimStart('\\'));
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+                _unitOfWork.Product.Delete(product);
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "Product Delete Done!" });
             }
-            return View(category);
         }
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteData(int? id)
-        {
-            var category = _unitOfWork.Category.GetT(x => x.Id == id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-            _unitOfWork.Category.Delete(category);
-            _unitOfWork.Save();
-            TempData["success"] = "Category Deleted Done!";
-            return RedirectToAction("Index");
-        }
+        #endregion
     }
 }
