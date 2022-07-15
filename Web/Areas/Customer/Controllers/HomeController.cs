@@ -24,6 +24,12 @@ namespace Web.Areas.Customer.Controllers
             return View(products);
         }
 
+        public IActionResult Details(int? id)
+        {
+            Product product = _unitofWork.Product.GetT(x => x.Id == id, includeProperties: "Category");
+            return View(product);
+        }
+
         public IActionResult Privacy()
         {
             return View();
