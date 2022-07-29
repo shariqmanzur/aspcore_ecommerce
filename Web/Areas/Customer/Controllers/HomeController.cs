@@ -1,8 +1,10 @@
 ﻿using DataAccessLayer.Infrastructure.IRepository;
 using DataAccessLayer.Infrastructure.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace Web.Areas.Customer.Controllers
 {
@@ -24,14 +26,32 @@ namespace Web.Areas.Customer.Controllers
             return View(products);
         }
 
-        public IActionResult Details(int? id)
+        [HttpGet]
+        public IActionResult Details(int? ProductId)
         {
             Cart cart = new Cart()
             {
-                Product = _unitofWork.Product.GetT(x => x.Id == id, includeProperties: "Category"),
-                Count = 1
+                Product = _unitofWork.Product.GetT(x => x.Id == ProductId, includeProperties: "Category"),
+                Count = 1,
+                ProductId = (int)ProductId
             };
             return View(cart);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult Details(Cart cart)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            cart.ApplicationUserId = claims.Value;
+            if (ModelState.IsValid)
+            {
+                _unitofWork.Cart.Add(cart);
+                _unitofWork.Save();
+            }
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()
