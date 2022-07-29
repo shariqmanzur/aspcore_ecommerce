@@ -46,11 +46,19 @@ namespace Web.Areas.Customer.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             cart.ApplicationUserId = claims.Value;
-            if (ModelState.IsValid)
+
+            var cartItem = _unitofWork.Cart.GetT(x => x.ProductId == cart.ProductId && x.ApplicationUserId == claims.Value);
+
+            if (cartItem == null)
             {
                 _unitofWork.Cart.Add(cart);
-                _unitofWork.Save();
             }
+            else
+            {
+                _unitofWork.Cart.IncrementCartItem(cartItem, cart.Count);
+            }
+            _unitofWork.Save();
+
             return RedirectToAction("Index");
         }
 
