@@ -9,7 +9,7 @@ namespace DataAccessLayer.Infrastructure.IRepository
 {
     public interface IRepository<T> where T : class
     {
-        IEnumerable<T> GetAll(string? includeProperties = null);
+        IEnumerable<T> GetAll(Expression<Func<T, bool>>? expression = null, string? includeProperties = null);
         T GetT(Expression<Func<T, bool>> expression, string? includeProperties = null);
         void Add(T entity);
         void Delete(T entity);
