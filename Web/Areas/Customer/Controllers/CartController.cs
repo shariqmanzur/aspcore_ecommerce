@@ -21,10 +21,16 @@ namespace Web.Areas.Customer.Controllers
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            
             CartVM itemList = new CartVM()
             {
                 ListOfCart = _unitOfWork.Cart.GetAll(x => x.ApplicationUserId == claims.Value, includeProperties: "Product")
             };
+
+            foreach (var item in itemList.ListOfCart)
+            {
+                itemList.Total += (item.Product.Price * item.Count);
+            }
             return View(itemList);
         }
     }

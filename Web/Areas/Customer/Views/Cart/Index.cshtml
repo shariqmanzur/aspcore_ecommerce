@@ -20,6 +20,7 @@
               </div>
               <div class="col-md-3 col-lg-3 col-xl-3">
                 <p class="lead fw-normal mb-2">@item.Product.Name</p>
+                <p class="text-muted">@Html.Raw(@item.Product.Description)</p>
               </div>
               <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                 <button class="btn btn-primary px-2"
@@ -36,7 +37,7 @@
                 </button>
               </div>
               <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                <h5 class="mb-0">$499.00</h5>
+                <h5 class="mb-0">@item.Product.Price x @item.Count</h5>
               </div>
               <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                 <a href="#!" class="text-danger"><i class="bi bi-trash"></i></a>
@@ -45,7 +46,16 @@
           </div>
         </div>
         }
-        <div class="card">
+       <div class="card mb-4">
+           <div class="card-body p-4 d-flex flex-row">
+               <div class="form-outline flex-fill">
+                   <label class="form-label">Total(PKR)</label>
+               </div>
+               <label class="ms-3">@Model.Total.ToString("c")</label>
+           </div>
+       </div>
+
+       <div class="card">
           <div class="card-body">
             <button type="button" class="btn btn-warning btn-block btn-lg">Proceed to Pay</button>
           </div>
