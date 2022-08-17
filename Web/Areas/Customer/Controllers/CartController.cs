@@ -34,6 +34,11 @@ namespace Web.Areas.Customer.Controllers
             return View(itemList);
         }
 
+        public IActionResult Summary()
+        {
+            return View();
+        }
+
         public IActionResult plus(int id)
         {
             var cart = _unitOfWork.Cart.GetT(x => x.Id == id);
