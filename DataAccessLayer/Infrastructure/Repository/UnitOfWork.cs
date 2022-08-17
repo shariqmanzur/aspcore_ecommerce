@@ -16,6 +16,10 @@ namespace DataAccessLayer.Infrastructure.Repository
         public ICartRepository Cart { get; private set; }
         public IApplicationUserRepository ApplicationUser { get; private set; }
 
+        public IOrderHeaderRepository OrderHeader { get; private set; }
+
+        public IOrderDetailRepository OrderDetail { get; private set; }
+
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -23,6 +27,8 @@ namespace DataAccessLayer.Infrastructure.Repository
             Product = new ProductRepository(context);
             Cart = new CartRepository(context);
             ApplicationUser = new ApplicationUserRepository(context);
+            OrderHeader = new OrderHeaderRepository(context);
+            OrderDetail = new OrderDetailRepository(context);
         }
         public void Save()
         {
