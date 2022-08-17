@@ -68,26 +68,27 @@
           </form>
         </div>
         <div class="col-md-8 order-md-1">
-          <h4 class="mb-3">Billing address</h4>
+          <h4 class="mb-3">Shipping address</h4>
           <form class="needs-validation" novalidate>
             <div class="row">
               <div class="col-md-6 mb-3">
-                <label for="firstName">First name</label>
-                <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Full Name" value="" required>
                 <div class="invalid-feedback">
-                  Valid first name is required.
+                  Valid name is required.
                 </div>
               </div>
+
               <div class="col-md-6 mb-3">
-                <label for="lastName">Last name</label>
-                <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                <label for="phone">Phone</label>
+                <input type="text" class="form-control" id="phone" placeholder="Phone" required>
                 <div class="invalid-feedback">
-                  Valid last name is required.
+                  Please enter your phone number.
                 </div>
               </div>
             </div>
 
-            <div class="mb-3">
+@*            <div class="mb-3">
               <label for="username">Username</label>
               <div class="input-group">
                 <div class="input-group-prepend">
@@ -98,15 +99,15 @@
                   Your username is required.
                 </div>
               </div>
-            </div>
+            </div>*@
 
-            <div class="mb-3">
+@*            <div class="mb-3">
               <label for="email">Email <span class="text-muted">(Optional)</span></label>
               <input type="email" class="form-control" id="email" placeholder="you@example.com">
               <div class="invalid-feedback">
                 Please enter a valid email address for shipping updates.
               </div>
-            </div>
+            </div>*@
 
             <div class="mb-3">
               <label for="address">Address</label>
@@ -116,13 +117,13 @@
               </div>
             </div>
 
-            <div class="mb-3">
+@*            <div class="mb-3">
               <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
               <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
-            </div>
+            </div>*@
 
             <div class="row">
-              <div class="col-md-5 mb-3">
+@*              <div class="col-md-5 mb-3">
                 <label for="country">Country</label>
                 <select class="custom-select d-block w-100" id="country" required>
                   <option value="">Choose...</option>
@@ -131,12 +132,127 @@
                 <div class="invalid-feedback">
                   Please select a valid country.
                 </div>
+              </div>*@
+              <div class="col-md-5 mb-3">
+                <label for="city">City</label>
+                <select class="custom-select d-block w-100" id="city" required>
+                  <option value="">Choose...</option>
+                  <option>Karachi</option>
+                  <option>Lahore</option>
+                  <option>Faisalabad</option>
+                  <option>Rawalpindi</option>
+                  <option>Gujranwala</option>
+                  <option>Peshawar</option>
+                  <option>Multan</option>
+                  <option>Hyderabad</option>
+                  <option>Islamabad</option>
+                  <option>Quetta</option>
+                  <option>Bahawalpur</option>
+                  <option>Sargodha</option>
+                  <option>Sialkot</option>
+                  <option>Sukkur</option>
+                  <option>Larkana</option>
+                  <option>Rahim Yar Khan</option>
+                  <option>Sheikhupura</option>
+                  <option>Jhang</option>
+                  <option>Dera Ghazi Khan</option>
+                  <option>Gujrat</option>
+                  <option>Sahiwal</option>
+                  <option>Wah Cantonment</option>
+                  <option>Mardan</option>
+                  <option>Kasur</option>
+                  <option>Okara</option>
+                  <option>Mingora</option>
+                  <option>Nawabshah</option>
+                  <option>Chiniot</option>
+                  <option>Kotri</option>
+                  <option>Kāmoke</option>
+                  <option>Hafizabad</option>
+                  <option>Sadiqabad</option>
+                  <option>Mirpur Khas</option>
+                  <option>Burewala</option>
+                  <option>Kohat</option>
+                  <option>Khanewal</option>
+                  <option>Dera Ismail Khan</option>
+                  <option>Turbat</option>
+                  <option>Muzaffargarh</option>
+                  <option>Abbotabad</option>
+                  <option>Mandi Bahauddin</option>
+                  <option>Shikarpur</option>
+                  <option>Jacobabad</option>
+                  <option>Jhelum</option>
+                  <option>Khanpur</option>
+                  <option>Khairpur</option>
+                  <option>Khuzdar</option>
+                  <option>Pakpattan</option>
+                  <option>Hub</option>
+                  <option>Daska</option>
+                  <option>Gojra</option>
+                  <option>Dadu</option>
+                  <option>Muridke</option>
+                  <option>Bahawalnagar</option>
+                  <option>Samundri</option>
+                  <option>Tando Allahyar</option>
+                  <option>Tando Adam</option>
+                  <option>Jaranwala</option>
+                  <option>Chishtian</option>
+                  <option>Muzaffarabad</option>
+                  <option>Attock</option>
+                  <option>Vehari</option>
+                  <option>Kot Abdul Malik</option>
+                  <option>Ferozwala</option>
+                  <option>Chakwal</option>
+                  <option>Gujranwala Cantonment</option>
+                  <option>Kamalia</option>
+                  <option>Umerkot</option>
+                  <option>Ahmedpur East</option>
+                  <option>Kot Addu</option>
+                  <option>Wazirabad</option>
+                  <option>Mansehra</option>
+                  <option>Layyah</option>
+                  <option>Mirpur</option>
+                  <option>Swabi</option>
+                  <option>Chaman</option>
+                  <option>Taxila</option>
+                  <option>Nowshera</option>
+                  <option>Khushab</option>
+                  <option>Shahdadkot</option>
+                  <option>Mianwali</option>
+                  <option>Kabal</option>
+                  <option>Lodhran</option>
+                  <option>Hasilpur</option>
+                  <option>Charsadda</option>
+                  <option>Bhakkar</option>
+                  <option>Badin</option>
+                  <option>Arif Wala</option>
+                  <option>Ghotki</option>
+                  <option>Sambrial</option>
+                  <option>Jatoi</option>
+                  <option>Haroonabad</option>
+                  <option>Daharki</option>
+                  <option>Narowal</option>
+                  <option>Tando Muhammad Khan</option>
+                  <option>Kamber Ali Khan</option>
+                  <option>Mirpur Mathelo</option>
+                  <option>Kandhkot</option>
+                  <option>Bhalwal</option>
+                  <option>Gwadar</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid city.
+                </div>
               </div>
               <div class="col-md-4 mb-3">
                 <label for="state">State</label>
                 <select class="custom-select d-block w-100" id="state" required>
                   <option value="">Choose...</option>
-                  <option>California</option>
+                  <option>Punjab</option>
+                  <option>Sindh</option>
+                  <option>Khyber Pakhtunkhwa</option>
+                  <option>Balochistan</option>
+                  <option>Islamabad Capital Territory</option>
+                  <option>Azad Jammu and Kashmir</option>
+                  <option>Gilgit–Baltistan</option>
                 </select>
                 <div class="invalid-feedback">
                   Please provide a valid state.
@@ -150,7 +266,7 @@
                 </div>
               </div>
             </div>
-            <hr class="mb-4">
+          @*<hr class="mb-4">
             <div class="custom-control custom-checkbox">
               <input type="checkbox" class="custom-control-input" id="same-address">
               <label class="custom-control-label" for="same-address">Shipping address is the same as my billing address</label>
@@ -161,9 +277,9 @@
             </div>
             <hr class="mb-4">
 
-            <h4 class="mb-3">Payment</h4>
+           <h4 class="mb-3">Payment</h4>
 
-            <div class="d-block my-3">
+           <div class="d-block my-3">
               <div class="custom-control custom-radio">
                 <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
                 <label class="custom-control-label" for="credit">Credit card</label>
@@ -209,7 +325,7 @@
                   Security code required
                 </div>
               </div>
-            </div>
+            </div>*@
             <hr class="mb-4">
             <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
           </form>
