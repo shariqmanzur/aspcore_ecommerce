@@ -1,6 +1,8 @@
-﻿using DataAccessLayer.Infrastructure.IRepository;
+﻿using CommonHelper;
+using DataAccessLayer.Infrastructure.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 using Models.ViewModels;
 using System.Security.Claims;
 
@@ -12,6 +14,8 @@ namespace Web.Areas.Customer.Controllers
     {
         private IUnitOfWork _unitOfWork;
 
+        public CartVM cartVM { get; set; }
+
         public CartController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -22,17 +26,17 @@ namespace Web.Areas.Customer.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-            CartVM vm = new CartVM()
+            cartVM = new CartVM()
             {
                 ListOfCart = _unitOfWork.Cart.GetAll(x => x.ApplicationUserId == claims.Value, includeProperties: "Product"),
                 OrderHeader = new Models.OrderHeader()
             };
             
-            foreach (var item in vm.ListOfCart)
+            foreach (var item in cartVM.ListOfCart)
             {
-                vm.OrderHeader.OrderTotal += (item.Product.Price * item.Count);
+                cartVM.OrderHeader.OrderTotal += (item.Product.Price * item.Count);
             }
-            return View(vm);
+            return View(cartVM);
         }
 
         public IActionResult Summary()
@@ -40,25 +44,65 @@ namespace Web.Areas.Customer.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-            CartVM vm = new CartVM()
+            cartVM = new CartVM()
             {
                 ListOfCart = _unitOfWork.Cart.GetAll(x => x.ApplicationUserId == claims.Value, includeProperties: "Product"),
                 OrderHeader = new Models.OrderHeader()
             };
 
-            vm.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.GetT(x => x.Id == claims.Value);
-            vm.OrderHeader.Name = vm.OrderHeader.ApplicationUser.Name;
-            vm.OrderHeader.Phone = vm.OrderHeader.ApplicationUser.PhoneNumber;
-            vm.OrderHeader.Address = vm.OrderHeader.ApplicationUser.Address;
-            vm.OrderHeader.City = vm.OrderHeader.ApplicationUser.City;
-            vm.OrderHeader.State = vm.OrderHeader.ApplicationUser.State;
-            vm.OrderHeader.PostalCode = vm.OrderHeader.ApplicationUser.PinCode;
+            cartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.GetT(x => x.Id == claims.Value);
+            cartVM.OrderHeader.Name = cartVM.OrderHeader.ApplicationUser.Name;
+            cartVM.OrderHeader.Phone = cartVM.OrderHeader.ApplicationUser.PhoneNumber;
+            cartVM.OrderHeader.Address = cartVM.OrderHeader.ApplicationUser.Address;
+            cartVM.OrderHeader.City = cartVM.OrderHeader.ApplicationUser.City;
+            cartVM.OrderHeader.State = cartVM.OrderHeader.ApplicationUser.State;
+            cartVM.OrderHeader.PostalCode = cartVM.OrderHeader.ApplicationUser.PinCode;
+
+            foreach (var item in cartVM.ListOfCart)
+            {
+                cartVM.OrderHeader.OrderTotal += (item.Product.Price * item.Count);
+            }
+            return View(cartVM);
+        }
+
+        [HttpPost]
+        public IActionResult Summary(CartVM vm)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            vm.ListOfCart = _unitOfWork.Cart.GetAll(x => x.ApplicationUserId == claims.Value, includeProperties: "Product");
+            vm.OrderHeader.OrderStatus = OrderStatus.StatusPending;
+            vm.OrderHeader.PaymentStatus = PaymentStatus.StatusPending;
+            vm.OrderHeader.DateOfOrder = DateTime.Now;
+
+            vm.OrderHeader.ApplicationUserId = claims.Value;
 
             foreach (var item in vm.ListOfCart)
             {
                 vm.OrderHeader.OrderTotal += (item.Product.Price * item.Count);
             }
-            return View(vm);
+
+            _unitOfWork.OrderHeader.Add(vm.OrderHeader);
+            _unitOfWork.Save();
+
+            foreach (var item in vm.ListOfCart)
+            {
+                OrderDetail orderDetail = new OrderDetail()
+                {
+                    ProductId = item.ProductId,
+                    OrderHeaderId = vm.OrderHeader.Id,
+                    Count = item.Count,
+                    Price = item.Product.Price,
+                };
+                _unitOfWork.OrderDetail.Add(orderDetail);
+                _unitOfWork.Save();
+            }
+            
+            _unitOfWork.Cart.DeleteRange(vm.ListOfCart);
+            _unitOfWork.Save();
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult plus(int id)
