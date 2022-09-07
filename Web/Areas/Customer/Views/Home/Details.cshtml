@@ -9,7 +9,7 @@
         <div class="col-6">
             <div class="row">
                 <label asp-for="Product.Name">Product Name: @Model.Product.Name</label>
-                <label asp-for="Product.Description">Product Description: @Model.Product.Description</label>
+                <label asp-for="Product.Description">Product Description: @Html.Raw(Model.Product.Description)</label>
                 <label asp-for="Product.Price">Product Price: @Model.Product.Price.ToString("0.00")</label>
                 <label asp-for="Product.Category.Id">Product Category: @Model.Product.Category.Name</label>
                 <div class="form-control">
